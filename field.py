@@ -11,6 +11,8 @@ class Field2048:
         self.state=[[None,None,None,None],[None,None,None,None],[None,None,None,None],[None,None,None,None]]
         self.create_set_of_empty()
         self.legal_move=False
+        self.score=0
+        
         
     def create_set_of_empty(self):
         self.empty=set()
@@ -32,12 +34,13 @@ class Field2048:
             current_add=2
         self.state[add_field[0]][add_field[1]]=current_add
 
-    @staticmethod
-    def sweep_row(input_list):
+    
+    def sweep_row(self,input_list):
         return_list=[x for x in input_list if x]
         for i in range(len(return_list)-1):
             if return_list[i]==return_list[i+1]:
                 return_list[i]*=2
+                self.score+=return_list[i]
                 return_list[i+1]=None
         return_list=[x for x in return_list if x]
         while len(return_list)<4:
@@ -155,7 +158,7 @@ class Field2048:
         top="┌─────┬─────┬─────┬─────┐\n"
         middle="├─────┼─────┼─────┼─────┤\n"
         bottom="└─────┴─────┴─────┴─────┘"
-        field=top
+        field=f"Use a,s,d,w to play        Score: {self.score}\n\n"+top
         for i in range(4):
             for j in range(4):
                 field+="│"+self.print_cell(self.state[i][j])
